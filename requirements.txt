@@ -1,0 +1,10 @@
+streamlit
+bayesian-optimization
+shap
+pandas
+numpy
+matplotlib
+plotly.express
+lightgbm
+sklearn
+pyarrow
