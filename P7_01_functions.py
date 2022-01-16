@@ -201,7 +201,7 @@ def rare_encoder(data, col, rare_perc):
 def plt_confusion_matrix(y_true, y_pred):
     '''fonction qui trace la matrice de confusion'''
     plt.figure(figsize=(10,6))
-    sns.heatmap(confusion_matrix(y_true, y_pred), annot=True, cmap="YlGnBu")
+    sns.heatmap(confusion_matrix(y_true, y_pred), annot=True , fmt=".1f", cmap="YlGnBu")
     plt.ylabel('True classes', fontsize=14)
     plt.xlabel('Predicted classes', fontsize=14)
     plt.title('Matrice de confusion', fontsize=20)
