@@ -189,7 +189,7 @@ permettant d'interpréter les prédictions faites par le modèle et d’amélior
 la connaissance client des chargés de relation client.
 """)
 
-col1, col2, col3 = st.beta_columns([5,1,10]) # crée 3 colonnes
+col1, col2, col3 = st.columns([5,1,10]) # crée 3 colonnes
 with col1:
     st.write("### Merci d'entrer un identifiant client :")
     identifiant = st.number_input(' ', min_value=100001, max_value=112188)
@@ -305,8 +305,8 @@ with st.spinner('Calcul en cours'):
         st.write("## Graphes interactifs permettant de comparer "
                      "le client à un groupe suivant un paramètre choisi")
 
-        with st.beta_expander("Afficher les graphes"):
-            col1_1, col2_1, col3_1 = st.beta_columns([10, 1, 10])  # crée 3 colonnes
+        with st.expander("Afficher les graphes"):
+            col1_1, col2_1, col3_1 = st.columns([10, 1, 10])  # crée 3 colonnes
             with col1_1:
                 param = st.selectbox(label=" Veuillez choisir le paramètre à comparer : ",
                                      options=('Genre',
