@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 import plotly.express as px
+import requests
+import json
 
 from pathlib import Path
 
@@ -250,7 +252,11 @@ with st.spinner('Calcul en cours'):
     if (df['SK_ID_CURR'] == identifiant).sum() == 0:
         st.write("Identifiant client inconnu")
     else:
+        df_tmp = pd.read_csv("source/data_api.csv")
         df_client = df[df['SK_ID_CURR'] == identifiant]
+        df_proba = df_tmp[interpretable_important_data_target]
+        df_proba_client = df_proba[df_proba['SK_ID_CURR'] == identifiant]
+
         df_client_int = df_int[df_int['Identifiant'] == identifiant]
         df_client_int_SU = df_int_sans_unite[df_int_sans_unite['Identifiant'] == identifiant]
         df_client_int.set_index('Identifiant', inplace=True)
@@ -261,16 +267,31 @@ with st.spinner('Calcul en cours'):
 
         with col1:
             feats = [f for f in df_client.columns if f not in ['SK_ID_CURR', 'TARGET']]
-            results = pd.DataFrame(lgbm.predict_proba(df_client[feats]),
-                                   index=[identifiant])
+            
+            # Post request
+            url = 'http://127.0.0.1:8000/predictUnpaid'
+            print("tests")
+            myobj = {
+                "PAYMENT_RATE": df_proba_client["PAYMENT_RATE"].iloc[0],
+                "AMT_ANNUITY": df_proba_client["AMT_ANNUITY"].iloc[0],
+                "DAYS_BIRTH": int(df_proba_client["DAYS_BIRTH"].iloc[0]),
+                "DAYS_EMPLOYED": df_proba_client["DAYS_EMPLOYED"].iloc[0],
+                "ANNUITY_INCOME_PERC": df_proba_client["ANNUITY_INCOME_PERC"].iloc[0]
+            }
+            myobj
+            x = requests.post(url, json = myobj)
 
-            results.rename({0: "Absence de défaut de paiement", 1: "Probabilité d'impayés"},
-                           axis=1, inplace=True)
+            #Create the pandas DataFrame
+            json_object = json.loads(x.text)
+            data = [['tom', json_object["prediction"]]]
+
+            res = pd.DataFrame(data, columns = ['Absence de défaut de paiement', "Probabilité d'impayés"],index=[identifiant])
 
             st.write("## Prédiction",
-                     results["Probabilité d'impayés"])
+                     res["Probabilité d'impayés"])
 
-        proba = results["Probabilité d'impayés"].iloc[0]
+        proba = float(res["Probabilité d'impayés"].iloc[0])
+
         def_p = "Le client a déjà été en défaut de paiement : " + str(df_client_int['Défaut paiement'].iloc[0])
         if proba < 0.5:
             with col1:
