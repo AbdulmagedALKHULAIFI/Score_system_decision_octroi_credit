@@ -12,7 +12,8 @@ https://www.kaggle.com/ekrembayar/homecredit-default-risk-step-by-step-1st-noteb
 
 - P7_03_code_dashboard.py : code du dashboard, avec Streamlit.
 - P7_04_notebook_test_API.ipynb : fichier contenant les tests pour l'application, et la création de tables supplémentaires.
+- API
 
 - Déploiement avec Streamlit Share : https://share.streamlit.io/abdulmagedalkhulaifi/projet7_data_science/main/P7_03_code_dashboard.py
-
+- Déploiment d'API sur Heroku : https://bank-projet7.herokuapp.com/
 
