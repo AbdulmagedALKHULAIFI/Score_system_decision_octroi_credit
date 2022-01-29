@@ -269,8 +269,8 @@ with st.spinner('Calcul en cours'):
             feats = [f for f in df_client.columns if f not in ['SK_ID_CURR', 'TARGET']]
             
             # Post request
-            url = 'http://127.0.0.1:8000/predictUnpaid'
-            print("tests")
+            url = 'https://bank-projet7.herokuapp.com/predictUnpaid'
+            
             myobj = {
                 "PAYMENT_RATE": df_proba_client["PAYMENT_RATE"].iloc[0],
                 "AMT_ANNUITY": df_proba_client["AMT_ANNUITY"].iloc[0],
